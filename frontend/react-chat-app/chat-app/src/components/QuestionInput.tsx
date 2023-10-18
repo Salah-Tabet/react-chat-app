@@ -12,26 +12,31 @@ interface QuestionInputProps {
 function QuestionInput({ selectedDocument, onQuestionSubmit, onReset }: QuestionInputProps) {
   const [question, setQuestion] = useState('');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedQuestion = e.target.value;
     setQuestion(updatedQuestion);
     setIsSubmitDisabled(!selectedDocument || !updatedQuestion);
   };
-
   const handleSubmit = () => {
-    const url = `http://127.0.0.1:5000/qa?q=${question}&docId=${selectedDocument}`
+    const url = `http://127.0.0.1:5000/qa?q=${question}&docId=${selectedDocument}`;
+    setIsLoading(true);
+    setTimeout(() => {
     axios
       .get(url)
       .then((response) => {
         onQuestionSubmit(response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error submitting question:', error);
+        setIsLoading(false);
       });
 
     setQuestion('');
     setIsSubmitDisabled(true);
+  }, 5000);
   };
 
   const handleKeyPress = (event: any) => {
@@ -60,10 +65,10 @@ function QuestionInput({ selectedDocument, onQuestionSubmit, onReset }: Question
           className="block w-full p-2 border rounded-md"
         />
           <div className="ml-auto text-right mr-0">
-            <SubmitButton onClick={handleSubmit} disabled={isSubmitDisabled} />
+            <SubmitButton onClick={handleSubmit} disabled={isSubmitDisabled} isLoading = {isLoading} />
             </div>
+           
     </div>
-      
   );
 }
 

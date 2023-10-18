@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function ChatHistoryItem({ item }: any) {
+function ChatHistoryItem({ item, isLoading }: any) {
   const [showSources, setShowSources] = useState(false);
 
   const [expandedTextIndices, setExpandedTextIndices] = useState<number[]>([]);
@@ -31,9 +31,8 @@ function ChatHistoryItem({ item }: any) {
       </button>
       {showSources && (
         <div className="italic ml-4">
-          Sources:
           <ul>
-            {item.source_documents?.map((sourceDoc: any, i: number) => (
+          {item.source_documents?.map((sourceDoc: any, i: number) => (
               <li key={i}>
                 <div className="pl-4">
                   Page Content: {isTextExpanded(i) ? sourceDoc.page_content : sourceDoc.page_content.slice(0, 50)+ ' ...'}
@@ -57,7 +56,7 @@ function ChatHistoryItem({ item }: any) {
                   </>
                 )}
               </li>
-            ))}
+            ))};
           </ul>
         </div>
       )}

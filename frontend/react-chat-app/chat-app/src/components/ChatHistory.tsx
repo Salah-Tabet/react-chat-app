@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ChatHistoryItem from './ChatHistoryItem';
+import Spinner from './Spinner';
 
 interface ChatHistoryProps {
   chatHistory: Array<{
@@ -55,6 +56,7 @@ function ChatHistory({ chatHistory }: ChatHistoryProps) {
            <ChatHistoryItem item = {item}/>
         </div>
       ))}
+      
     </div>
   );
 }
