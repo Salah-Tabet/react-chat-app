@@ -11,8 +11,25 @@ function App() {
 
   const handleQuestionSubmit = (response: any) => {
     // Update chat history with the response from the Flask API
-    setChatHistory([...chatHistory, response]);
+    if (response && response.result && response.source_documents) {
+      const newChatItem = {
+        question: response.query,
+        answer: response.result,
+        source_documents: response.source_documents.map((sourceDoc: any) => ({
+          page_content: sourceDoc.page_content,
+          metadata: {
+            source: sourceDoc.metadata.source,
+            page: sourceDoc.metadata.page,
+          },
+        })),
+      };
+      setChatHistory([...chatHistory, newChatItem]);
+    } else {
+      console.error('Invalid response:', response);
+    }
   };
+  
+  
 
   const handleReset = () => {
     // Clear chat history

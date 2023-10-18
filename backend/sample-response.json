@@ -1,0 +1,27 @@
+{
+    "query": "What is the difference between market discount and qualified stated interest?",
+    "result": "Based on the context provided:\n\nlarket discount is the difference betveen the issue price plus accrued OID an",
+    "source_documents": [
+        {
+            "page_content": "Market discount. An OID debt instrument Ingenerally has market discount if your adjusted Inbasis in",
+            "metadata": {
+                "source": "data/p1212.pdf",
+                "page": 2
+            }
+        },
+        {
+            "page_content": "count, your broker will use a constant yield Inmethod to determine accruals of market dis-lncount rath",
+            "metadata": {
+                "source": "data/p1212.pdf",
+                "page": 5
+            }
+        },
+        {
+            "page_content": "Premium. A debt instrument is purchased at a \npremium if its adjusted basis immediately after \npurchase",
+            "metadata": {
+                "source": "data/p1212.pdf",
+                "page": 2
+            }
+        }
+    ]
+}

@@ -1,3 +1,4 @@
+import json
 from flask import Flask
 from flask import url_for
 from flask import request
@@ -22,18 +23,18 @@ def list_docs():
     {"docId": 24, "docName": "GEH Brokerage (K-8 Filing)"},
     {"docId": 25, "docName": "IJK Brokerage (K-8 Filing)"}]
 
-@app. route("/qa", methods=['POST'])
+@app. route("/qa", methods=['GET'])
 def answer_question():
-    docId = escape(request.args.get('docId'))
+    document = escape(request.args.get('doc'))
     question = escape(request.args.get("q"))
     print(f"question: fquestion)")
-    print(f"docId: fdocId)")
-    answer = __infer(docId, question)
-    return {
-        "docId": docId,
-        "question": question,
-        "answer": answer
-    }
+    print(f"document: fdocument)")
+    return  __infer(document, question)
+    # return {
+    #     "docId": docId,
+    #     "question": question,
+    #     "answer": answer
+    # }
 
 def __infer(context, question)->str:
     """this function "asks" the questions. It invokes the Bedrock model
@@ -41,7 +42,9 @@ def __infer(context, question)->str:
     return (
     "answer": answer,
     "context"; context """
-    return "The answer is 42!"
+    #return "The answer is 42!"
+    with open("sample-response.json") as f:
+        return json.load(f)
     
 def __bootstrap():
     """Bootstraps the service with connections to Amazon Bedrock service

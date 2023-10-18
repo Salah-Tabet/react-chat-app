@@ -1,5 +1,5 @@
 // src/components/QuestionInput.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SubmitButton from './SubmitButton'; 
 
@@ -11,18 +11,18 @@ interface QuestionInputProps {
 
 function QuestionInput({ selectedDocument, onQuestionSubmit, onReset }: QuestionInputProps) {
   const [question, setQuestion] = useState('');
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuestion(e.target.value);
+    const updatedQuestion = e.target.value;
+    setQuestion(updatedQuestion);
+    setIsSubmitDisabled(!selectedDocument || !updatedQuestion);
   };
 
   const handleSubmit = () => {
-    // Call the onSubmit function to send the question to the backend
+    const url = `http://127.0.0.1:5000/qa?q=${question}&docId=${selectedDocument}`
     axios
-      .post('http://127.0.0.1:5000/qa', {
-        docId: selectedDocument,
-        q: question,
-      })
+      .get(url)
       .then((response) => {
         onQuestionSubmit(response.data);
       })
@@ -31,7 +31,22 @@ function QuestionInput({ selectedDocument, onQuestionSubmit, onReset }: Question
       });
 
     setQuestion('');
+    setIsSubmitDisabled(true);
   };
+
+  const handleKeyPress = (event: any) => {
+    if (event.key === 'Enter' && !isSubmitDisabled) {
+      handleSubmit();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isSubmitDisabled]);
 
   return (
 
@@ -45,7 +60,7 @@ function QuestionInput({ selectedDocument, onQuestionSubmit, onReset }: Question
           className="block w-full p-2 border rounded-md"
         />
           <div className="ml-auto text-right mr-0">
-            <SubmitButton onClick={handleSubmit} />
+            <SubmitButton onClick={handleSubmit} disabled={isSubmitDisabled} />
             </div>
     </div>
       
